@@ -9,26 +9,21 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>dev</artifactId>
-  <name>DLI SDK Demo</name>
+  <artifactId>dli-spark-demo</artifactId>
+  <name>DLI Spark App Demo</name>
 
   <dependencies>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-core_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_${scala.binary.version}</artifactId>
     </dependency>
     <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.huaweicloud.dli</groupId>
-      <artifactId>huaweicloud-dli-sdk-java</artifactId>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-mllib_${scala.binary.version}</artifactId>
     </dependency>
   </dependencies>
-
 </project>

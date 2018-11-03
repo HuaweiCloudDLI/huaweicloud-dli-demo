@@ -11,8 +11,8 @@
   <name>HuaweiCloud DLI Examples</name>
 
   <modules>
-    <module>demo</module>
-    <module>dev</module>
+    <module>spark-demo</module>
+    <module>sdk-demo</module>
   </modules>
 
   <properties>
