@@ -4,25 +4,25 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.SparkSession;
 
 public class JDataPreparation {
-  public static void main(String args[]) {
+  public static void main(String[] args) {
 
-    if (args.length != 2) {
-      System.out.println("Wrong number of arguments! Expected 2 but got " + args.length);
+    if (args.length != 4) {
+      System.out.println("Wrong number of arguments! Expected 4 but got " + args.length);
       return;
     }
 
-    // your AK/SK to access OBS
-    String AK = "******";
-    String SK = "******";
-
-    String prefix = "s3a://" + AK + ":" + SK + "@";
-    String readPath = prefix + args[0];
-    String writePath = prefix + args[1];
+    // get parameters
+    String ak = args[0];
+    String sk = args[1];
+    String readPath = args[2];
+    String writePath = args[3];
 
     SparkSession spark = SparkSession
       .builder()
       .appName("demo")
       .getOrCreate();
+    spark.sparkContext().hadoopConfiguration().set("fs.s3a.access.key", ak);
+    spark.sparkContext().hadoopConfiguration().set("fs.s3a.secret.key", sk);
 
     // read the raw data
     Dataset<String> data = spark.read().textFile(readPath);
@@ -42,6 +42,6 @@ public class JDataPreparation {
     // output the cleaned data we want
     cleanedData.write().text(writePath);
 
-    spark.close();
+    spark.stop();
   }
 }

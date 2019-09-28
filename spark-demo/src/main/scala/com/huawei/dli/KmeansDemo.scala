@@ -7,21 +7,21 @@ import org.apache.spark.mllib.linalg.Vectors
 object KmeansDemo {
   def main(args: Array[String]): Unit = {
 
-    if (args.length != 2) {
-      println(s"Wrongnumber of arguments! Expected 2 but got ${args.length}")
+    if (args.length != 4) {
+      println(s"Wrong number of arguments! Expected 4 but got ${args.length}")
       return
     }
 
-    // your AK/SK to access OBS
-    val AK = "******"
-    val SK = "******"
+    // get parameters
+    val ak = args(0)
+    val sk = args(1)
+    val readPath = args(2)
+    val writePath = args(3)
 
-    val prefix = "s3a://" + AK + ":" + SK + "@"
-    val readPath = prefix + args(0)
-    val writePath = prefix + args(1)
-
-    val conf = new SparkConf().setAppName("KMeansExample")
+    val conf = new SparkConf().setAppName("demo")
     val sc = new SparkContext(conf)
+    sc.hadoopConfiguration.set("fs.s3a.access.key", ak)
+    sc.hadoopConfiguration.set("fs.s3a.secret.key", sk)
 
     // Load and parse the data
     val data = sc.textFile(readPath)

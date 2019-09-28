@@ -13,19 +13,19 @@ def headIsLong(x):
   return isValid
 
 if __name__ == "__main__":
-  if len(sys.argv) != 2:
-    print "Wrong number of arguments! Expected 2 but got " + str(len(sys.argv))
+  if len(sys.argv) != 4:
+    print "Wrong number of arguments! Expected 4 but got " + str(len(sys.argv))
     exit(-1)
 
-  # your AK/SK to access OBS
-  ak = "******"
-  sk = "******"
-
-  prefix = "s3a://" + ak + ":" + sk + "@"
-  readPath = prefix + sys.argv[1]
-  writePath = prefix + sys.argv[2]
+  # get parameters
+  ak = sys.argv[1]
+  sk = sys.argv[2]
+  readPath = sys.argv[3]
+  writePath = sys.argv[4]
 
   spark = SparkSession.builder.appName("demo").getOrCreate()
+  spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", ak)
+  spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", sk)
 
   # read the raw data
   data = spark.read.text(readPath).rdd.map(lambda r: r[0])
