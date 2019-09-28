@@ -23,9 +23,9 @@ if __name__ == "__main__":
   readPath = sys.argv[3]
   writePath = sys.argv[4]
 
-  spark = SparkSession.builder.appName("demo").getOrCreate()
-  spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", ak)
-  spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", sk)
+  spark = SparkSession.builder.appName("pyspark_demo").getOrCreate()
+  spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", ak)
+  spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", sk)
 
   # read the raw data
   data = spark.read.text(readPath).rdd.map(lambda r: r[0])

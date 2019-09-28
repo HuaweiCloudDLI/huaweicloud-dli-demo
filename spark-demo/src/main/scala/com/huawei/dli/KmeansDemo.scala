@@ -18,15 +18,17 @@ object KmeansDemo {
     val readPath = args(2)
     val writePath = args(3)
 
-    val conf = new SparkConf().setAppName("demo")
+    val conf = new SparkConf().setAppName("KmeansExample")
     val sc = new SparkContext(conf)
     sc.hadoopConfiguration.set("fs.s3a.access.key", ak)
     sc.hadoopConfiguration.set("fs.s3a.secret.key", sk)
 
     // Load and parse the data
     val data = sc.textFile(readPath)
-    val parsedData = data.map { s =>
+    val header = data.first()
+    val parsedData = data.filter(_ != header).map { s =>
       val attributes = s.split(",")
+      // Use attributes 'latitude' and 'longitude' as the clustering features
       val array = Seq(attributes(16).toDouble, attributes(17).toDouble).toArray
       Vectors.dense(array)
     }
@@ -35,11 +37,12 @@ object KmeansDemo {
     val numClusters = 2
     val numIterations = 20
     val clusters = KMeans.train(parsedData, numClusters, numIterations)
+
     // Evaluate clustering by computing Within Set Sum of Squared Errors
     val WSSSE = clusters.computeCost(parsedData)
     println("Within Set Sum of Squared Errors = " + WSSSE)
 
-    // Save and load model
+    // Save the model
     clusters.save(sc, writePath)
     sc.stop()
   }

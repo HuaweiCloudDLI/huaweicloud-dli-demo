@@ -18,7 +18,7 @@ object DataPreparation {
 
     val spark = SparkSession
       .builder
-      .appName("demo")
+      .appName("scala_spark_demo")
       .getOrCreate()
     spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", ak)
     spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", sk)
