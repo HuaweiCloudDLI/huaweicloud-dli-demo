@@ -5,23 +5,23 @@ import org.apache.spark.sql.SparkSession
 object DataPreparation {
   def main(args: Array[String]): Unit = {
 
-    if (args.length != 2) {
-      println(s"Wrong number of arguments! Expected 2 but got ${args.length}")
+    if (args.length != 4) {
+      println(s"Wrong number of arguments! Expected 4 but got ${args.length}")
       return
     }
 
-    // your AK/SK to access OBS
-    val AK = "******"
-    val SK = "******"
-
-    val prefix = "s3a://" + AK + ":" + SK + "@"
-    val readPath = prefix + args(0)
-    val writePath = prefix + args(1)
+    // get parameters
+    val ak = args(0)
+    val sk = args(1)
+    val readPath = args(2)
+    val writePath = args(3)
 
     val spark = SparkSession
       .builder
-      .appName("demo")
+      .appName("scala_spark_demo")
       .getOrCreate()
+    spark.sparkContext.hadoopConfiguration.set("fs.s3a.access.key", ak)
+    spark.sparkContext.hadoopConfiguration.set("fs.s3a.secret.key", sk)
 
     // read the raw data
     val data = spark.read.textFile(readPath)
@@ -43,6 +43,6 @@ object DataPreparation {
     // output the cleaned data we want
     cleanedData.write.text(writePath)
 
-    spark.close()
+    spark.stop()
   }
 }

@@ -13,10 +13,9 @@ object KMeansDemo {
       return
     }
 
-    // Your AK/SK to access OBS
+    // get parameters
     val ak = args(0)
     val sk = args(1)
-
     val readPath = args(2)
     val writePath = args(3)
 
